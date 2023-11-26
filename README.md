@@ -79,3 +79,86 @@ m80PNugLePPVRxyVHuSzkkmctLZmMi+pO3i1LLXKo0VlK8irx8U=
           		ansible_python_interpreter: /usr/bin/python3
           		server_host-3: 15.206.124.171
     		ungrouped: {}
+----> ping all the remot server connected
+
+	:ansible all -m ping.
+
+	--->Getting below error
+
+		server2 | UNREACHABLE! => {
+       		"changed": false,
+      		"msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname server2: Temporary failure in name resolution",
+      		"unreachable": true
+		}
+		The authenticity of host '52.66.120.212 (52.66.120.212)' can't be established.
+		ECDSA key fingerprint is SHA256:GQZtRyM/v+ByDOdAaL5ImQCp2fsz18bAMxLTsjBMD4A.
+		Are you sure you want to continue connecting (yes/no/[fingerprint])? server3 | UNREACHABLE! => {
+		    "changed": false,
+		    "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname server3: Temporary failure in name resolution",
+		    "unreachable": true
+		}
+		yes
+		server1 | UNREACHABLE! => {
+		    "changed": false,
+    		"msg": "Failed to connect to the host via ssh: Warning: Permanently added '52.66.120.212' (ECDSA) to the list of known hosts.\r\nubuntu@52.66.120.212: Permission denied (publickey).",
+    		"unreachable": true
+		}
+	
+      ------>>We did not added the private key in all the servers so we have to sepecify the private key and the hosts path in the command.
+		:ansible all -m ping -i /etc/ansible/hosts  --private-key=~/.ssh/ansible_keys
+			ERROR:Pivate key files are NOT accessible by others
+
+	----->>Go to home and give access to the .ssh and ansible keys
+			 chmod 700 ~/.ssh
+			 chmod 600 ~/.ssh/ansible_keys
+
+	------>>We have to run the command to check the connection between the servers.
+		:ansible all -m ping -i /etc/ansible/hosts  --private-key=~/.ssh/ansible_keys.
+
+		o/p:::--
+			server2 | SUCCESS => {
+ 			   "changed": false,
+ 			   "ping": "pong"
+			}
+			server1 | SUCCESS => {
+			    "changed": false,
+			    "ping": "pong"
+			}
+			server3 | SUCCESS => {
+			    "changed": false,
+			    "ping": "pong"
+			}
+
+----->by above we sucessfully connect 3 server using ansible master and now we can update the configurations tasks using the yml files....
+
+---> To check all servers disk space from the master ansible.
+
+	:ansible all -a "free -h" -i /etc/ansible/hosts  --private-key=~/.ssh/ansible_keys
+		
+		o/p::--
+
+		server3 | CHANGED | rc=0 >>
+		               total        used        free      shared  buff/cache   available
+		Mem:           949Mi       169Mi       322Mi       0.0Ki       457Mi       623Mi
+		Swap:             0B          0B          0B
+		server1 | CHANGED | rc=0 >>
+		               total        used        free      shared  buff/cache   available
+		Mem:           949Mi       170Mi       320Mi       0.0Ki       458Mi       622Mi
+		Swap:             0B          0B          0B
+		server2 | CHANGED | rc=0 >>
+		               total        used        free      shared  buff/cache   available
+		Mem:           949Mi       175Mi       283Mi       0.0Ki       490Mi       615Mi
+		Swap:             0B          0B          0B 			
+			
+
+---> To check all servers uptime from the master ansible.
+
+	:ansible all -a "uptime" -i /etc/ansible/hosts  --private-key=~/.ssh/ansible_keys
+
+	o/p::--
+		server2 | CHANGED | rc=0 >>
+		 06:56:20 up  3:36,  1 user,  load average: 0.00, 0.00, 0.00
+		server1 | CHANGED | rc=0 >>
+		 06:56:20 up  3:36,  1 user,  load average: 0.00, 0.00, 0.00
+		server3 | CHANGED | rc=0 >>
+		 06:56:20 up  3:36,  1 user,  load average: 0.00, 0.00, 0.00
