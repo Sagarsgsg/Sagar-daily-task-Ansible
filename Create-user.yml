@@ -1,0 +1,9 @@
+---
+- name: To create users on hosts
+  hosts: all
+  become: true
+  tasks:
+  - name: create user
+     user: name=sagar_devops
+
+#ansible-playbook create_user.yml -i /etc/ansible//hosts --private-key=~/.ssh/ansible_keys
