@@ -1,0 +1,11 @@
+---
+- name: create a file on hosts
+  hosts: all
+  become: true
+  tasks:
+  - name: create a file
+    file:
+      path: /home/ubuntu/sagusam.txt
+      state: touch
+
+:ansible-playbook file-name.yml -i /etc/ansible/hosts --private-key=~/.ssh/ansible_keys
