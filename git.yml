@@ -1,7 +1,7 @@
 ---
 -name : install git on host
 become : true
-task
+tasks
 - name: install git
 apt:
  name: git
