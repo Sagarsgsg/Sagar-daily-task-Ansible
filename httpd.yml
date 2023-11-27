@@ -1,5 +1,10 @@
 ---
-- name: intall httpd on hosts
+- name: install httpd on hosts
   hosts: all
   become: true
+  tasks:
+  - name: install httpd
+    apt:
+      name: httpd
+      state: present
   
