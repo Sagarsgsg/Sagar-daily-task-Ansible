@@ -1,0 +1,5 @@
+---
+- name: intall httpd on hosts
+  hosts: all
+  become: true
+  
