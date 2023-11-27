@@ -1,5 +1,6 @@
 ---
 -name : install git on host
+hosts: all
 become : true
 tasks:
 - name: install git
