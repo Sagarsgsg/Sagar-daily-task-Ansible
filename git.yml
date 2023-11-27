@@ -1,8 +1,8 @@
 ---
-	-name: install git on host
-	 become: true
-	  task
-	    - name: install git
-	      apt:
-		 name: git
-	      	state: present
+-name : install git on host
+become : true
+task
+- name: install git
+apt:
+ name: git
+ state: present
